@@ -1,0 +1,41 @@
+###
+POST http://localhost:3000/api/users HTTP/1.1
+Content-Type: application/json
+
+{
+    "email":"user.example3@tuto.com", 
+    "password":"74895556",
+    "data":{
+        "name":"Leidy",
+        "lastname":"Cabezas Lanasca",
+        "number":"944716130",
+        "dni":"74895556",
+        "saldo":"500"          
+        }  
+}
+
+###
+GET http://localhost:3000/api/users HTTP/1.1
+
+###
+GET http://localhost:3000/api/users/62999a1e446e8db8757b1d1a HTTP/1.1
+
+
+###
+PUT http://localhost:3000/api/users/629a3af59c96200b9b9567bd HTTP/1.1
+Content-Type: application/json
+
+{
+    "email":"user.example4@tuto.com", 
+    "password":"74895557",
+    "data":{
+        "name":"Leidy",
+        "lastname":"Cabezas Lanasca",
+        "number":"944716130",
+        "dni":"74895556",
+        "saldo":"600"          
+        }  
+}
+
+###
+DELETE http://localhost:3000/api/users/629a3af59c96200b9b9567bd HTTP/1.1
