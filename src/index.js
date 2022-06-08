@@ -1,3 +1,4 @@
+const cool = require('cool-ascii-faces');
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
@@ -23,6 +24,8 @@ mongoose
     .catch((error)=> console.log(error));
 
 //routes
+app.get('/cool', (req, res) => res.send(cool()));
+
 app.get('/', (req, res)=>{
     res.send("Bienvenido a nuestra API");
 });
