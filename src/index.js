@@ -24,10 +24,10 @@ mongoose
     .catch((error)=> console.log(error));
 
 //routes
-app.get('/cool', (req, res) => res.send(cool()));
+//app.get('/cool', (req, res) => res.send(cool()));
 
 app.get('/', (req, res)=>{
-    res.send("Bienvenido a nuestra API");
+    res.send("<h1>Bienvenido a Nuestra API</h1>\n" + "<h2> BANCA MOVIL - GRUPO 6</h2>");
 });
 
 app.listen(port, () => {
