@@ -17,9 +17,9 @@ app.use('/api', authRoutes);
 
 
 //mongodb connection
-const uri = `mongodb+srv://bancamovil:bancamovil@clusterbanca.3asum.mongodb.net/Banca?retryWrites=true&w=majority`
+//const uri = `mongodb+srv://bancamovil:bancamovil@clusterbanca.3asum.mongodb.net/Banca?retryWrites=true&w=majority`
 mongoose
-    .connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
+    .connect(process.env.MONGODB_URI, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(()=> console.log('Connected to MongoDB Atlas'))
     .catch((error)=> console.log(error));
 
