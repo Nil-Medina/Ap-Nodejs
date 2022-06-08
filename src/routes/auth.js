@@ -1,8 +1,8 @@
 const express = require('express');
 const userSchema = require('../models/users');
 const Joi = require('@hapi/joi');
-const bcrypt = require('bcrypt');
-const user = require('../models/user');
+const bcrypt = require('bcryptjs');
+//const user = require('../models/user');
 
 const router = express.Router();
 
@@ -85,5 +85,5 @@ router.get('/authUsers', (req, res) => {
 });
 
 
-
+module.exports.bcrypt = bcrypt;
 module.exports = router;
