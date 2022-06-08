@@ -2,7 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
 const userRoutes = require('./routes/users');
-
+const authRoutes = require('./routes/auth');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -10,12 +10,15 @@ const port = process.env.PORT || 3000;
 
 //middleware
 app.use(express.json());
+app.use(express.urlencoded({ extended: true}));
 app.use('/api', userRoutes);
+app.use('/api', authRoutes);
 
 
 //mongodb connection
+const uri = `mongodb+srv://${process.env.USER}:${process.env.PASSWORD}@clusterbanca.3asum.mongodb.net/${process.env.DBNAME}?retryWrites=true&w=majority`
 mongoose
-    .connect(process.env.MONGODB_URI)
+    .connect(uri, {useNewUrlParser: true, useUnifiedTopology: true})
     .then(()=> console.log('Connected to MongoDB Atlas'))
     .catch((error)=> console.log(error));
 
