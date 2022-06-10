@@ -19,15 +19,15 @@ router.post('/register', async (req, res) => {
     const { error } = schemaRegister.validate(req.body);
 
     if (error) {
-        return res.status(400).json(
-            { error: error.details[0].message }
+        return res.json(
+            [error.details[0].message]
         )
     }
 
     const isEmailExist = await userSchema.findOne({ email: req.body.email });
     if (isEmailExist) {
-        return res.status(500).json(
-            { error : 'Email ya registrado'}
+        return res.json(
+            ['Email ya registrado']
         )
     }
 
@@ -60,26 +60,35 @@ router.post('/login', async (req, res) => {
     
     const { error } = schemaLogin.validate(req.body);
     if (error) {
-        return res.status(400).json({error: error.details[0].message})
+        return res.json([error.details[0].message])
     }
 
     const user = await userSchema.findOne({email: req.body.email});
     if (!user) {
-        return res.status(400).json({error: 'Usuario no encontrado'})
+        return res.json(['usuario no registrado'])
     }
 
     const validPassword = await bcrypt.compare(req.body.password, user.password);
     if (!validPassword) {
-        return res.status(400).json({error: 'Contraseña Invalida'})
+        return res.json(['contraseña incorrecta'])
     }
 
-    res.json(['Bienvenido']);
+    res.json(['success']);
 });
 
 //ver usuarios
 router.get('/authUsers', (req, res) => {
     userSchema
     .find()
+    .then((data)=> res.json(data))
+    .catch((error)=> res.json({ message: error}));
+});
+
+//buscar usuario por id
+router.get('/authUsers/:id', (req, res)=>{
+    const { id } = req.params;
+    userSchema
+    .findById(id)
     .then((data)=> res.json(data))
     .catch((error)=> res.json({ message: error}));
 });
