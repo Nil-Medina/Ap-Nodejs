@@ -2,6 +2,7 @@ const cool = require('cool-ascii-faces');
 const express = require('express');
 const mongoose = require('mongoose');
 require('dotenv').config();
+const cookieParser = require('cookie-parser');
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
 const dashboardRoutes = require('./routes/dashboard');
@@ -14,8 +15,9 @@ const port = process.env.PORT || 3000;
 //middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
+app.use(cookieParser());
 app.use('/api', userRoutes);
-app.use('/api',authRoutes);
+app.use('/api', authRoutes);
 app.use('/api', verifyToken, dashboardRoutes);
 
 
