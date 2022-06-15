@@ -1,4 +1,6 @@
 const mongoose = require('mongoose');
+const findOneorFailPlugin = require('mongoose-findoneorfail');
+mongoose.plugin(findOneorFailPlugin);
 
 const user1Schema = mongoose.Schema({
     email:{
@@ -23,6 +25,18 @@ const user1Schema = mongoose.Schema({
         require: true,
         min: 6,
         max:255
+    },
+    dni:{
+        type: Number,
+        require: true,
+        min: 9999999,
+        max:99999999
+    },
+    number:{
+        type: Number,
+        require: true,
+        min: 99999999,
+        max:999999999
     },
 },{
     versionKey: false

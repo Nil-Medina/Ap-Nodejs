@@ -4,6 +4,8 @@ const mongoose = require('mongoose');
 require('dotenv').config();
 const userRoutes = require('./routes/users');
 const authRoutes = require('./routes/auth');
+const dashboardRoutes = require('./routes/dashboard');
+const verifyToken = require('./routes/validate-token');
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -13,7 +15,9 @@ const port = process.env.PORT || 3000;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true}));
 app.use('/api', userRoutes);
-app.use('/api', authRoutes);
+app.use('/api',authRoutes);
+app.use('/api', verifyToken, dashboardRoutes);
+
 
 
 //mongodb connection
