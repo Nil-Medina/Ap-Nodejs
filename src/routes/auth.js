@@ -95,8 +95,8 @@ router.post('/login', async (req, res) => {
 
     res.cookie('auth', token);
 
-    const findByToken = jwt.verify(token,process.env.TOKEN_SECRET);
-    if(findByToken) return res.json([{message:"You are already logged in"}]);
+    /*const findByToken = jwt.verify(token,process.env.TOKEN_SECRET);
+    if(findByToken) return res.json([{message:"You are already logged in"}]);*/
 
     res.json(['success']);
 });
