@@ -4,6 +4,7 @@ const Joi = require('@hapi/joi');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const { auth } = require('../middlewares/authen');
+const users = require('../models/users');
 //const bodyParser = require('body-parser');
 
 const router = express.Router();
@@ -73,32 +74,34 @@ const schemaLogin = Joi.object({
 
 router.post('/login', async (req, res) => {
 
-    const { error } = schemaLogin.validate(req.body);
-    if (error) {
-        return res.json([error.details[0].message])
+    let { token } = req.cookies;
+    if (token) {
+        //
+    }else if (!token){
+        const { error } = schemaLogin.validate(req.body);
+        if (error) {
+            return res.json([error.details[0].message])
+        }
+
+        const user = await userSchema.findOne({email: req.body.email});
+        if (!user) {
+            return res.json(['usuario no registrado'])
+        }
+
+        const validPassword = await bcrypt.compare(req.body.password, user.password);
+        if (!validPassword) {
+            return res.json(['contraseña incorrecta'])
+        }
+
+        //creando token
+        const token = jwt.sign({ 
+            id: user._id, 
+        }, process.env.TOKEN_SECRET);
+
+        res.cookie('auth', token);
+
+        res.json(['success']);
     }
-
-    const user = await userSchema.findOne({email: req.body.email});
-    if (!user) {
-        return res.json(['usuario no registrado'])
-    }
-
-    const validPassword = await bcrypt.compare(req.body.password, user.password);
-    if (!validPassword) {
-        return res.json(['contraseña incorrecta'])
-    }
-
-    //creando token
-    const token = jwt.sign({ 
-        id: user._id, 
-    }, process.env.TOKEN_SECRET);
-
-    res.cookie('auth', token);
-
-    /*const findByToken = jwt.verify(token,process.env.TOKEN_SECRET);
-    if(findByToken) return res.json([{message:"You are already logged in"}]);*/
-
-    res.json(['success']);
 });
 
 router.get('/logout', auth, async(req, res)=>{
@@ -109,11 +112,9 @@ router.get('/logout', auth, async(req, res)=>{
 });
 
 //ver usuarios
-router.get('/authUsers', (req, res) => {
-    userSchema
-    .find()
-    .then((data)=> res.json(data))
-    .catch((error)=> res.json({ message: error}));
+router.get('/authUsers', async(req, res) => {
+    userSchema.find().then((data)=> res.json({users: data}));
+    //res.json();
 });
 
 //buscar usuario por id

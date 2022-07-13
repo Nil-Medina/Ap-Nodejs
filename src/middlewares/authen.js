@@ -1,7 +1,8 @@
 const User = require('./../models/users');
 
 let auth = (req, res, next)=>{
-    let token = req.cookies;
+    
+    const { token } = req.headers;
     if (!token) {
         return res.json(['Acceso Denegado']);
     }
